@@ -18,16 +18,20 @@ public class BinaryTree<T extends Comparable<T>> {
             return newNode;
         }
 
-        if (data.compareTo(current.getData()) < 0) {
+        int comparison = data.compareTo(current.getData());
+        if (comparison < 0) {
             current.setLeft(insert(current.getLeft(), data, current));
-        } else if (data.compareTo(current.getData()) > 0) {
+        } else if (comparison > 0) {
             current.setRight(insert(current.getRight(), data, current));
+        } else {
+            System.out.println("Duplicate value '" + data + "' not inserted.");
         }
         return current;
     }
 
     public void printInOrder() {
         inOrder(root);
+        System.out.println();
     }
 
     private void inOrder(Node<T> node) {
@@ -38,18 +42,48 @@ public class BinaryTree<T extends Comparable<T>> {
         }
     }
 
+    public void printPreOrder() {
+        preOrder(root);
+        System.out.println();
+    }
+
     private void preOrder(Node<T> node) {
         if (node != null) {
             System.out.print(node.getData() + " ");
-            inOrder(node.getLeft());
-            inOrder(node.getRight());
+            preOrder(node.getLeft());
+            preOrder(node.getRight());
         }
     }
+
+    public void printPostOrder() {
+        postOrder(root);
+        System.out.println();
+    }
+
     private void postOrder(Node<T> node) {
         if (node != null) {
-            inOrder(node.getLeft());
-            inOrder(node.getRight());
+            postOrder(node.getLeft());
+            postOrder(node.getRight());
             System.out.print(node.getData() + " ");
+        }
+    }
+
+    public boolean search(T data) {
+        return search(root, data);
+    }
+
+    private boolean search(Node<T> node, T data) {
+        if (node == null) {
+            return false;
+        }
+
+        int comparison = data.compareTo(node.getData());
+        if (comparison == 0) {
+            return true;
+        } else if (comparison < 0) {
+            return search(node.getLeft(), data);
+        } else {
+            return search(node.getRight(), data);
         }
     }
 }

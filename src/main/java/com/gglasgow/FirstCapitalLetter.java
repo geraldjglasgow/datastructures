@@ -23,5 +23,4 @@ public class FirstCapitalLetter {
         index++;
         return first(str, index);
     }
-
 }
