@@ -8,26 +8,35 @@ public class BinaryTree<T extends Comparable<T>> {
     }
     
     public void insert(T data) {
-        root = insert(root, data, null);
+        if (root == null) {
+            root = new Node<>(data);
+        } else {
+            insert(root, data, null);
+        }
     }
-
-    private Node<T> insert(Node<T> current, T data, Node<T> parent) {
+    
+    private void insert(Node<T> current, T data, Node<T> parent) {
         if (current == null) {
             Node<T> newNode = new Node<>(data);
             newNode.setParent(parent);
-            return newNode;
+            if (data.compareTo(parent.getData()) < 0) {
+                parent.setLeft(newNode);
+            } else {
+                parent.setRight(newNode);
+            }
+            return;
         }
-
+    
         int comparison = data.compareTo(current.getData());
         if (comparison < 0) {
-            current.setLeft(insert(current.getLeft(), data, current));
+            insert(current.getLeft(), data, current);
         } else if (comparison > 0) {
-            current.setRight(insert(current.getRight(), data, current));
+            insert(current.getRight(), data, current);
         } else {
             System.out.println("Duplicate value '" + data + "' not inserted.");
         }
-        return current;
     }
+    
 
     public void printInOrder() {
         inOrder(root);
